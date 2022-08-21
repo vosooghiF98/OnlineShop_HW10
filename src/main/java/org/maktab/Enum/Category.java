@@ -1,5 +1,5 @@
 package org.maktab.Enum;
 
 public enum Category {
-    ELECTROMECHANICAL,SHOES,READABLE
+    ELECTRICAL_APPLIANCES,SHOES,READABLE
 }
