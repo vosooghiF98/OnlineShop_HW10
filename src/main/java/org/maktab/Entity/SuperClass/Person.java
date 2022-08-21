@@ -1,6 +1,8 @@
-package org.maktab.Entity;
+package org.maktab.Entity.SuperClass;
 
 import org.maktab.Base.BaseEntity;
+
+import java.util.Objects;
 
 public abstract class Person implements BaseEntity {
     private int id;
@@ -34,5 +36,18 @@ public abstract class Person implements BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return username.equals(person.username) && password.equals(person.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password);
     }
 }

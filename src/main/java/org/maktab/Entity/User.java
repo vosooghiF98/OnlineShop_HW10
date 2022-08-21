@@ -1,14 +1,13 @@
 package org.maktab.Entity;
 
-public class User extends Person{
+import org.maktab.Entity.SuperClass.Person;
+
+public class User extends Person {
     private String firstName;
     private String lastName;
     private String nationalCode;
-    public User(String username, String password, String firstName, String lastName, String nationalCode) {
+    public User(String username, String password) {
         super(username, password);
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.nationalCode = nationalCode;
     }
 
     public String getFirstName() {
@@ -33,5 +32,14 @@ public class User extends Person{
 
     public void setNationalCode(String nationalCode) {
         this.nationalCode = nationalCode;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", nationalCode='" + nationalCode + '\'' +
+                '}';
     }
 }

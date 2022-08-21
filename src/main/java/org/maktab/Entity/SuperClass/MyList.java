@@ -1,17 +1,17 @@
-package org.maktab.Entity;
+package org.maktab.Entity.SuperClass;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MyList<T> {
-    List<T> myList = new ArrayList<>();
-    protected void add(T t){
+    private List<T> myList = new ArrayList<>();
+    public void add(T t){
         myList.add(t);
     }
-    protected void delete(T t){
+    public void delete(T t){
         myList.remove(t);
     }
-    protected boolean contains(T t){
+    public boolean contains(T t){
         return myList.contains(t);
     }
     @Override
@@ -21,5 +21,9 @@ public abstract class MyList<T> {
             temp += (i+1) + "- " + myList.get(i).toString();
         }
         return temp;
+    }
+
+    public List<T> getMyList() {
+        return myList;
     }
 }
