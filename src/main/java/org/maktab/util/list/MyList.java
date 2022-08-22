@@ -1,4 +1,4 @@
-package org.maktab.Entity.SuperClass;
+package org.maktab.util.list;
 
 import java.util.ArrayList;
 import java.util.List;
