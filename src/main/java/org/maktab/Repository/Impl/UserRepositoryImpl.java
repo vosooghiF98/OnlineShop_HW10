@@ -1,14 +1,14 @@
 package org.maktab.Repository.Impl;
 
-import org.maktab.Base.BaseRepository;
 import org.maktab.Config.DBConfig;
 import org.maktab.Entity.User;
+import org.maktab.Repository.UserRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserRepositoryImpl implements BaseRepository<User> {
+public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void create(User user) throws SQLException {
@@ -68,6 +68,30 @@ public class UserRepositoryImpl implements BaseRepository<User> {
             preparedStatement.setString(1,user.getUsername());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    public boolean readByNationalCode(User user) throws SQLException {
+        String query = """
+                select * from users where national_code = ?
+                """;
+        try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
+            preparedStatement.setString(1, user.getNationalCode());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        }
+    }
+
+    @Override
+    public boolean readByUsername(User user) throws SQLException {
+        String query = """
+                select * from users where  user_name = ?
+                """;
+        try(PreparedStatement preparedStatement= DBConfig.getConnection().prepareStatement(query)){
+            preparedStatement.setString(1, user.getUsername());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
         }
     }
 }

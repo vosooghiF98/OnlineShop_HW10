@@ -4,13 +4,14 @@ import org.maktab.Config.DBConfig;
 import org.maktab.Entity.Cart;
 import org.maktab.Entity.CartProduct;
 import org.maktab.Entity.User;
-import org.maktab.Enum.Category;
-import org.maktab.Enum.ProductName;
+import org.maktab.Entity.Enum.Category;
+import org.maktab.Entity.Enum.ProductName;
 import org.maktab.Repository.CartRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public class CartRepositoryImpl implements CartRepository {
     @Override
@@ -20,8 +21,8 @@ public class CartRepositoryImpl implements CartRepository {
                 values (?,?,?,?,?,?,?)
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(cartProduct.getCategory()));
-            preparedStatement.setString(2, String.valueOf(cartProduct.getProductName()));
+            preparedStatement.setObject(1, cartProduct.getCategory());
+            preparedStatement.setObject(2, cartProduct.getProductName());
             preparedStatement.setInt(3,cartProduct.getQuantity());
             preparedStatement.setDouble(4,cartProduct.getPrice());
             preparedStatement.setDouble(5,cartProduct.getTotalPrice());
@@ -37,8 +38,8 @@ public class CartRepositoryImpl implements CartRepository {
                 select * from cart where category = ? and product = ? and is_pay = false
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(cartProduct.getCategory()));
-            preparedStatement.setString(2, String.valueOf(cartProduct.getProductName()));
+            preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, cartProduct.getProductName(), Types.OTHER);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
                 return result(resultSet);
@@ -53,8 +54,8 @@ public class CartRepositoryImpl implements CartRepository {
                 update cart set category = ? and product = ? and quantity = ? and price = ? and total_price = ? where id = ? and is_pay = false
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(cartProduct.getCategory()));
-            preparedStatement.setString(2, String.valueOf(cartProduct.getProductName()));
+            preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, cartProduct.getProductName(), Types.OTHER);
             preparedStatement.setInt(3,cartProduct.getQuantity());
             preparedStatement.setDouble(4,cartProduct.getPrice());
             preparedStatement.setDouble(5,cartProduct.getTotalPrice());
@@ -69,8 +70,8 @@ public class CartRepositoryImpl implements CartRepository {
                 delete from cart where category = ? and product = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(cartProduct.getCategory()));
-            preparedStatement.setString(2, String.valueOf(cartProduct.getProductName()));
+            preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, cartProduct.getProductName(), Types.OTHER);
             preparedStatement.executeUpdate();
         }
     }

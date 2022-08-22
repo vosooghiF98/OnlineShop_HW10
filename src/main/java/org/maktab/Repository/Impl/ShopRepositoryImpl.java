@@ -4,13 +4,14 @@ import org.maktab.Config.DBConfig;
 import org.maktab.Entity.CartProduct;
 import org.maktab.Entity.Shop;
 import org.maktab.Entity.ShopProduct;
-import org.maktab.Enum.Category;
-import org.maktab.Enum.ProductName;
+import org.maktab.Entity.Enum.Category;
+import org.maktab.Entity.Enum.ProductName;
 import org.maktab.Repository.ShopRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public class ShopRepositoryImpl implements ShopRepository {
 
@@ -21,8 +22,8 @@ public class ShopRepositoryImpl implements ShopRepository {
                 values (?,?,?,?,?)
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(shopProduct.getCategory()));
-            preparedStatement.setString(2, String.valueOf(shopProduct.getProductName()));
+            preparedStatement.setObject(1, shopProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, shopProduct.getProductName(), Types.OTHER);
             preparedStatement.setDouble(3, shopProduct.getPurchasePrice());
             preparedStatement.setDouble(4, shopProduct.getPrice());
             preparedStatement.setInt(5,shopProduct.getInventory());
@@ -36,8 +37,8 @@ public class ShopRepositoryImpl implements ShopRepository {
                 select * from shop where category = ? and product = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(shopProduct.getCategory()));
-            preparedStatement.setString(2, String.valueOf(shopProduct.getProductName()));
+            preparedStatement.setObject(1, shopProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, shopProduct.getProductName(), Types.OTHER);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
                 return result(resultSet);
@@ -54,7 +55,7 @@ public class ShopRepositoryImpl implements ShopRepository {
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setDouble(1, shopProduct.getPurchasePrice());
             preparedStatement.setDouble(2,shopProduct.getPrice());
-            preparedStatement.setInt(3,shopProduct.getInventory());
+            preparedStatement.setInt(3,readInventory(shopProduct) + shopProduct.getInventory());
             preparedStatement.setInt(4,id);
             preparedStatement.executeUpdate();
         }
@@ -66,8 +67,8 @@ public class ShopRepositoryImpl implements ShopRepository {
                 delete from shop where category = ? and product = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(shopProduct.getCategory()));
-            preparedStatement.setString(2, String.valueOf(shopProduct.getProductName()));
+            preparedStatement.setObject(1, shopProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, shopProduct.getProductName(), Types.OTHER);
             preparedStatement.executeUpdate();
         }
     }
@@ -77,8 +78,8 @@ public class ShopRepositoryImpl implements ShopRepository {
                 select inventory from shop where category = ? and product = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(cartProduct.getCategory()));
-            preparedStatement.setString(2, String.valueOf(cartProduct.getProductName()));
+            preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, cartProduct.getProductName(), Types.OTHER);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
                 return resultSet.getInt("inventory");
@@ -88,14 +89,29 @@ public class ShopRepositoryImpl implements ShopRepository {
     }
 
     @Override
+    public int readInventory(ShopProduct shopProduct) throws SQLException {
+        String query = """
+                select inventory from shop where category = ? and product = ?
+                """;
+        try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
+            preparedStatement.setObject(1, shopProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, shopProduct.getProductName(), Types.OTHER);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return resultSet.getInt("inventory");
+            }
+            return 0;
+        }
+    }
+    @Override
     public void updateInventory(CartProduct cartProduct) throws SQLException {
         String query = """
                 update shop set inventory = ? where category = ? and product = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setInt(1,readInventory(cartProduct)-cartProduct.getQuantity());
-            preparedStatement.setString(2, String.valueOf(cartProduct.getCategory()));
-            preparedStatement.setString(3, String.valueOf(cartProduct.getProductName()));
+            preparedStatement.setObject(2, cartProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(3, cartProduct.getProductName(), Types.OTHER);
             preparedStatement.executeUpdate();
         }
 
@@ -132,7 +148,7 @@ public class ShopRepositoryImpl implements ShopRepository {
                 select price from shop where product = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setString(1, String.valueOf(productName));
+            preparedStatement.setObject(1, productName, Types.OTHER);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
                 return resultSet.getDouble("price");

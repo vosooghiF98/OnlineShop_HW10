@@ -1,14 +1,14 @@
 package org.maktab.Repository.Impl;
 
-import org.maktab.Base.BaseRepository;
 import org.maktab.Config.DBConfig;
 import org.maktab.Entity.Admin;
+import org.maktab.Repository.AdminRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AdminRepositoryImpl implements BaseRepository<Admin> {
+public class AdminRepositoryImpl implements AdminRepository {
     @Override
     public void create(Admin admin) throws SQLException {
         String query = """
@@ -63,6 +63,18 @@ public class AdminRepositoryImpl implements BaseRepository<Admin> {
             preparedStatement.setString(1, admin.getUsername());
             preparedStatement.setString(2, admin.getPassword());
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    public boolean readByUsername(Admin admin) throws SQLException {
+        String query = """
+                select * from admin where  user_name = ?
+                """;
+        try(PreparedStatement preparedStatement= DBConfig.getConnection().prepareStatement(query)){
+            preparedStatement.setString(1, admin.getUsername());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
         }
     }
 }
