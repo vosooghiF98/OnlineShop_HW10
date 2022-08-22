@@ -1,11 +1,10 @@
 package org.maktab.Service;
 
-import org.maktab.Base.BaseRepository;
 import org.maktab.Base.BaseService;
 import org.maktab.Entity.CartProduct;
 import org.maktab.Entity.Shop;
 import org.maktab.Entity.ShopProduct;
-import org.maktab.Enum.ProductName;
+import org.maktab.Entity.Enum.ProductName;
 import org.maktab.Repository.Impl.ShopRepositoryImpl;
 
 import java.sql.SQLException;
