@@ -1,8 +1,8 @@
 package org.maktab.Entity.SuperClass;
 
 import org.maktab.Base.BaseEntity;
-import org.maktab.Enum.Category;
-import org.maktab.Enum.ProductName;
+import org.maktab.Entity.Enum.Category;
+import org.maktab.Entity.Enum.ProductName;
 
 import java.util.Objects;
 

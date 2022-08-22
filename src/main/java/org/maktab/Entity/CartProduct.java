@@ -1,8 +1,8 @@
 package org.maktab.Entity;
 
 import org.maktab.Entity.SuperClass.Product;
-import org.maktab.Enum.Category;
-import org.maktab.Enum.ProductName;
+import org.maktab.Entity.Enum.Category;
+import org.maktab.Entity.Enum.ProductName;
 
 public class CartProduct extends Product {
     private int quantity;

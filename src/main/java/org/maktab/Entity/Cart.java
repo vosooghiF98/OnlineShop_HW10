@@ -1,6 +1,6 @@
 package org.maktab.Entity;
 
-import org.maktab.Entity.SuperClass.MyList;
+import org.maktab.util.list.MyList;
 
 public class Cart extends MyList<CartProduct> {
     public double cartPrice(){
