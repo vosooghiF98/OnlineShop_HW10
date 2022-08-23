@@ -16,10 +16,13 @@ public class CartService extends BaseService<CartProduct> {
     public CartRepositoryImpl cartRepository() {
         return (CartRepositoryImpl) super.getRepository();
     }
-    Cart readAll(User user) throws SQLException{
+    public Cart readAll(User user) throws SQLException{
         return cartRepository().readAll(user);
     }
-    void changePayMode(User user) throws SQLException{
+    public void changePayMode(User user) throws SQLException{
         cartRepository().changePayMode(user);
+    }
+    public void deleteCart(User user) throws SQLException {
+        cartRepository().deleteCart(user);
     }
 }

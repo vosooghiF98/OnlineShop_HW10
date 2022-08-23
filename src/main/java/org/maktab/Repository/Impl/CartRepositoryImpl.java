@@ -35,11 +35,12 @@ public class CartRepositoryImpl implements CartRepository {
     @Override
     public CartProduct read(CartProduct cartProduct) throws SQLException {
         String query = """
-                select * from cart where category = ? and product = ? and is_pay = false
+                select * from cart where category = ? and product = ? and is_pay = false and user_id = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
             preparedStatement.setObject(2, cartProduct.getProductName(), Types.OTHER);
+            preparedStatement.setInt(3,cartProduct.getUserId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
                 return result(resultSet);
@@ -51,7 +52,7 @@ public class CartRepositoryImpl implements CartRepository {
     @Override
     public void update(CartProduct cartProduct, int id) throws SQLException {
         String query = """
-                update cart set category = ? and product = ? and quantity = ? and price = ? and total_price = ? where id = ? and is_pay = false
+                update cart set category = ? and product = ? and quantity = ? and price = ? and total_price = ? where id = ? and is_pay = false and user_id = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
@@ -60,6 +61,7 @@ public class CartRepositoryImpl implements CartRepository {
             preparedStatement.setDouble(4,cartProduct.getPrice());
             preparedStatement.setDouble(5,cartProduct.getTotalPrice());
             preparedStatement.setInt(6,id);
+            preparedStatement.setInt(7,cartProduct.getUserId());
             preparedStatement.executeUpdate();
         }
     }
@@ -67,11 +69,22 @@ public class CartRepositoryImpl implements CartRepository {
     @Override
     public void delete(CartProduct cartProduct) throws SQLException {
         String query = """
-                delete from cart where category = ? and product = ?
+                delete from cart where category = ? and product = ? and user_id = ? and is_pay = false
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
             preparedStatement.setObject(2, cartProduct.getProductName(), Types.OTHER);
+            preparedStatement.setInt(3,cartProduct.getUserId());
+            preparedStatement.executeUpdate();
+        }
+    }
+    @Override
+    public void deleteCart(User user) throws SQLException {
+        String query = """
+                delete from cart where user_id = ? and is_pay = false
+                """;
+        try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
+            preparedStatement.setInt(1,user.getId());
             preparedStatement.executeUpdate();
         }
     }
@@ -91,7 +104,6 @@ public class CartRepositoryImpl implements CartRepository {
             }
             return cart;
         }
-
     }
 
     private CartProduct result(ResultSet resultSet) throws SQLException {

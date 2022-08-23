@@ -8,6 +8,8 @@ import org.maktab.Entity.User;
 import java.sql.SQLException;
 
 public interface CartRepository extends BaseRepository<CartProduct> {
+    void deleteCart(User user) throws SQLException;
+
     Cart readAll(User user) throws SQLException;
     void changePayMode(User user) throws SQLException;
 }

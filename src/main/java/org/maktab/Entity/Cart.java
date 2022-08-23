@@ -10,4 +10,8 @@ public class Cart extends MyList<CartProduct> {
         }
         return cartPrice;
     }
+
+    public int size(){
+        return getMyList().size();
+    }
 }
