@@ -54,9 +54,13 @@ public class UserMenu {
         String username = input.next();
         System.out.print("Enter New password : ");
         String password = input.next();
-        User user1 = userService.read(new User(username,password));
-        userService.update(user1,user.getId());
-        return userService.read(user1);
+        User newUser = new User(username,password);
+        if (userService.readByUsername(newUser)){
+            throw new SignUpSignInException("This username is Exist!");
+        }else {
+            userService.update(newUser, user.getId());
+            return userService.read(newUser);
+        }
     }
 
     public void remove(User user) throws SQLException {

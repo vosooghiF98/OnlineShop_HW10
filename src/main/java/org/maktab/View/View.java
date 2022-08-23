@@ -1,22 +1,10 @@
 package org.maktab.View;
 
 import org.maktab.Check.Check;
-import org.maktab.Repository.Impl.AdminRepositoryImpl;
-import org.maktab.Repository.Impl.CartRepositoryImpl;
-import org.maktab.Repository.Impl.ShopRepositoryImpl;
-import org.maktab.Repository.Impl.UserRepositoryImpl;
-import org.maktab.Service.AdminService;
-import org.maktab.Service.CartService;
-import org.maktab.Service.ShopService;
-import org.maktab.Service.UserService;
 
 import java.util.Scanner;
 
 public class View {
-    AdminService adminService = new AdminService(new AdminRepositoryImpl());
-    UserService userService = new UserService(new UserRepositoryImpl());
-    ShopService shopService = new ShopService(new ShopRepositoryImpl());
-    CartService cartService = new CartService(new CartRepositoryImpl());
     Check check = new Check();
     public int main(Scanner input){
         System.out.println("Menu :");
@@ -49,17 +37,18 @@ public class View {
         System.out.println("Remove Your Cart : 3");
         System.out.println("Edit Product In Your Cart : 4");
         System.out.println("Show Your Cart : 5");
-        System.out.println("Exit : 6");
-        return check.checkButton(1,6,input);
+        System.out.println("Show Shop Products : 6");
+        System.out.println("Accept Payment : 7");
+        System.out.println("Edit username & password : 8");
+        System.out.println("Remove Account : 9");
+        System.out.println("Exit : 10");
+        return check.checkButton(1,10,input);
     }
 
     public int shop(Scanner input){
         System.out.println("Menu :");
         System.out.println("Add Product To Shop : 1");
-        System.out.println("Remove Product From Shop : 2");
-        System.out.println("Edit Product In Shop : 3");
-        System.out.println("Show Shop's Products : 4");
-        System.out.println("Exit : 5");
-        return check.checkButton(1,5,input);
+        System.out.println("Exit : 2");
+        return check.checkButton(1,2,input);
     }
 }

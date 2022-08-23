@@ -16,13 +16,19 @@ public class ShopService extends BaseService<ShopProduct> {
     public ShopRepositoryImpl shopRepository(){
         return (ShopRepositoryImpl) super.getRepository();
     }
-    void updateInventory(CartProduct cartProduct) throws SQLException{
+    public void updateInventory(CartProduct cartProduct) throws SQLException{
         shopRepository().updateInventory(cartProduct);
     }
-    Shop readAll() throws SQLException{
+    public Shop readAll() throws SQLException{
         return shopRepository().readAll();
     }
-    double getPrice(ProductName productName) throws SQLException{
+    public double getPrice(ProductName productName) throws SQLException{
         return shopRepository().getPrice(productName);
+    }
+    public int readInventory(CartProduct cartProduct) throws SQLException {
+        return shopRepository().readInventory(cartProduct);
+    }
+    public int readInventory(ShopProduct shopProduct) throws SQLException {
+        return shopRepository().readInventory(shopProduct);
     }
 }
