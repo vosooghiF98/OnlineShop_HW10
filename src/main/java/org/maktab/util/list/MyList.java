@@ -16,9 +16,9 @@ public abstract class MyList<T> {
     }
     @Override
     public String toString() {
-        String temp = null;
+        String temp = "";
         for (int i = 0; i < myList.size(); i++) {
-            temp += (i+1) + "- " + myList.get(i).toString();
+            temp += (i+1) + "- " + myList.get(i) + "\n";
         }
         return temp;
     }
