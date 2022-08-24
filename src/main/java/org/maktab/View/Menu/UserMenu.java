@@ -10,14 +10,15 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserMenu {
+    Scanner input = new Scanner(System.in);
     UserService userService = new UserService(new UserRepositoryImpl());
     Check check = new Check();
-    public User signUp(Scanner input) throws SQLException {
+    public User signUp() throws SQLException {
         System.out.print("Enter Your First Name : ");
-        String firstName = check.checkName(input);
+        String firstName = check.checkName();
         System.out.print("Enter Your Last Name : ");
-        String lastName = check.checkName(input);
-        String nationalCode = check.checkNationalCode(input);
+        String lastName = check.checkName();
+        String nationalCode = check.checkNationalCode();
         System.out.print("Enter Your username : ");
         String username = input.next();
         System.out.print("Enter Your password : ");
@@ -36,7 +37,7 @@ public class UserMenu {
         }
     }
 
-    public User signIn(Scanner input) throws SQLException {
+    public User signIn() throws SQLException {
         System.out.print("Enter Your username : ");
         String username = input.next();
         System.out.print("Enter Your password : ");
@@ -49,7 +50,7 @@ public class UserMenu {
         }
     }
 
-    public User edit(User user, Scanner input) throws SQLException {
+    public User edit(User user) throws SQLException {
         System.out.print("Enter New username : ");
         String username = input.next();
         System.out.print("Enter New password : ");
@@ -59,12 +60,20 @@ public class UserMenu {
             throw new SignUpSignInException("This username is Exist!");
         }else {
             userService.update(newUser, user.getId());
+            System.out.println("Edit Is Successfully.");
             return userService.read(newUser);
         }
     }
 
     public void remove(User user) throws SQLException {
-        userService.delete(user);
-        System.exit(1);
+        System.out.print("Are You Sure About Delete Your Account (Y/N) : ");
+        boolean yn = check.checkYN();
+        if (yn) {
+            userService.delete(user);
+            System.out.println("Delete Is Successfully.");
+            System.exit(1);
+        }else {
+            System.out.println("Delete Isn't Successfully.");
+        }
     }
 }

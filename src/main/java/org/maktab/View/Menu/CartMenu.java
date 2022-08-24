@@ -15,7 +15,6 @@ import org.maktab.Service.CartService;
 import org.maktab.Service.ShopService;
 
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class CartMenu {
     CartService cartService = new CartService(new CartRepositoryImpl());
@@ -23,19 +22,19 @@ public class CartMenu {
     Check check = new Check();
     CartProduct cartProduct;
     int button;
-    public void add(User user, Scanner input) throws SQLException {
+    public void add(User user) throws SQLException {
         if (cartService.readAll(user).size() == 5) {
             throw new CartException("Your Cart Is Full!");
         }
-        button = chooseCategory(input);
+        button = chooseCategory();
         Category category;
         ProductName productName;
         if (button == 1){
             category = Category.ELECTRICAL_APPLIANCES;
+            System.out.println("--Choose Product--");
             System.out.println("RADIO : 1");
             System.out.println("TV : 2");
-            System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.RADIO;
             }else {
@@ -43,10 +42,10 @@ public class CartMenu {
             }
         } else if (button == 2) {
             category = Category.SHOES;
+            System.out.println("--Choose Product--");
             System.out.println("SPORT_SHOES : 1");
             System.out.println("FORMAL_SHOES : 2");
-            System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.SPORT_SHOES;
             }else {
@@ -54,10 +53,10 @@ public class CartMenu {
             }
         }else {
             category = Category.READABLE;
+            System.out.println("--Choose Product--");
             System.out.println("BOOK : 1");
             System.out.println("MAGAZINE : 2");
-            System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.BOOK;
             }else {
@@ -65,12 +64,13 @@ public class CartMenu {
             }
         }
         System.out.print("Enter Quantity : ");
-        int quantity = check.checkQuantity(input);
+        int quantity = check.checkQuantity();
         double price = shopService.getPrice(productName);
         int userId = user.getId();
         cartProduct = new CartProduct(category,productName);
         cartProduct.setQuantity(quantity);
         cartProduct.setPrice(price);
+        cartProduct.setTotalPrice();
         cartProduct.setUserId(userId);
         if (cartService.read(cartProduct) != null) {
             throw new CartException("This Product Is Exist In Your Cart!");
@@ -81,16 +81,16 @@ public class CartMenu {
             System.out.println("Add Is Successfully.");
         }
     }
-    public void removeProduct(User user, Scanner input) throws SQLException {
-        button = chooseCategory(input);
+    public void removeProduct(User user) throws SQLException {
+        button = chooseCategory();
         Category category;
         ProductName productName;
         if (button == 1){
             category = Category.ELECTRICAL_APPLIANCES;
+            System.out.println("--Choose Product--");
             System.out.println("RADIO : 1");
             System.out.println("TV : 2");
-            System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.RADIO;
             }else {
@@ -98,10 +98,10 @@ public class CartMenu {
             }
         } else if (button == 2) {
             category = Category.SHOES;
+            System.out.println("--Choose Product--");
             System.out.println("SPORT_SHOES : 1");
             System.out.println("FORMAL_SHOES : 2");
-            System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.SPORT_SHOES;
             }else {
@@ -109,10 +109,10 @@ public class CartMenu {
             }
         }else {
             category = Category.READABLE;
+            System.out.println("--Choose Product--");
             System.out.println("BOOK : 1");
             System.out.println("MAGAZINE : 2");
-            System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.BOOK;
             }else {
@@ -120,6 +120,7 @@ public class CartMenu {
             }
         }
         cartProduct = new CartProduct(category, productName);
+        cartProduct.setUserId(user.getId());
         if (cartService.readAll(user).contains(cartProduct)){
             cartService.delete(cartProduct);
         }else {
@@ -131,21 +132,29 @@ public class CartMenu {
         if (cartService.readAll(user).size() == 0){
             throw new CartException("You Don't Have Any Active Cart!");
         }else {
-            cartService.deleteCart(user);
+            System.out.print("Are You Sure About Remove Your Cart ? (Y/N) : ");
+            boolean yn = check.checkYN();
+            if (yn){
+                cartService.deleteCart(user);
+                System.out.println("Cart Is Deleted.");
+            }else {
+                System.out.println("Cart Is Not Deleted.");
+            }
+
         }
     }
 
-    public void edit(User user, Scanner input) throws SQLException {
+    public void edit(User user) throws SQLException {
         System.out.println("Enter Previous Category and Product name : ");
-        button = chooseCategory(input);
+        button = chooseCategory();
         Category category;
         ProductName productName;
         if (button == 1){
             category = Category.ELECTRICAL_APPLIANCES;
+            System.out.println("--Choose Product--");
             System.out.println("RADIO : 1");
             System.out.println("TV : 2");
-            System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.RADIO;
             }else {
@@ -153,10 +162,10 @@ public class CartMenu {
             }
         } else if (button == 2) {
             category = Category.SHOES;
+            System.out.println("--Choose Product--");
             System.out.println("SPORT_SHOES : 1");
             System.out.println("FORMAL_SHOES : 2");
-            System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.SPORT_SHOES;
             }else {
@@ -167,7 +176,7 @@ public class CartMenu {
             System.out.println("BOOK : 1");
             System.out.println("MAGAZINE : 2");
             System.out.print("Enter Product : ");
-            button = check.checkButton(1,2,input);
+            button = check.checkButton(1,2);
             if (button == 1){
                 productName = ProductName.BOOK;
             }else {
@@ -175,17 +184,18 @@ public class CartMenu {
             }
         }
         cartProduct = new CartProduct(category,productName);
-        if (cartService.read(cartProduct) == null){
+        cartProduct.setUserId(user.getId());
+        if (!cartService.readAll(user).contains(cartProduct)){
             throw new CartException("This Product Is Not In Your Cart!");
         }else {
             System.out.println("Enter New Product's Specifications : ");
-            button = chooseCategory(input);
+            button = chooseCategory();
             if (button == 1){
                 category = Category.ELECTRICAL_APPLIANCES;
+                System.out.println("--Choose Product--");
                 System.out.println("RADIO : 1");
                 System.out.println("TV : 2");
-                System.out.print("Enter Product : ");
-                button = check.checkButton(1,2,input);
+                button = check.checkButton(1,2);
                 if (button == 1){
                     productName = ProductName.RADIO;
                 }else {
@@ -193,10 +203,10 @@ public class CartMenu {
                 }
             } else if (button == 2) {
                 category = Category.SHOES;
+                System.out.println("--Choose Product--");
                 System.out.println("SPORT_SHOES : 1");
                 System.out.println("FORMAL_SHOES : 2");
-                System.out.print("Enter Product : ");
-                button = check.checkButton(1,2,input);
+                button = check.checkButton(1,2);
                 if (button == 1){
                     productName = ProductName.SPORT_SHOES;
                 }else {
@@ -204,10 +214,10 @@ public class CartMenu {
                 }
             }else {
                 category = Category.READABLE;
+                System.out.println("--Choose Product--");
                 System.out.println("BOOK : 1");
                 System.out.println("MAGAZINE : 2");
-                System.out.print("Enter Product : ");
-                button = check.checkButton(1,2,input);
+                button = check.checkButton(1,2);
                 if (button == 1){
                     productName = ProductName.BOOK;
                 }else {
@@ -215,18 +225,20 @@ public class CartMenu {
                 }
             }
             System.out.print("Enter Quantity : ");
-            int quantity = check.checkQuantity(input);
+            int quantity = check.checkQuantity();
             double price = shopService.getPrice(productName);
             int userId = user.getId();
             CartProduct newCartProduct = new CartProduct(category,productName);
             newCartProduct.setQuantity(quantity);
             newCartProduct.setPrice(price);
+            newCartProduct.setTotalPrice();
             newCartProduct.setUserId(userId);
-            if (cartService.read(newCartProduct) != null){
+            if (cartService.readAll(user).contains(newCartProduct)){
                 throw new CartException("This Product is Exist In Your Cart!");
             } else if (shopService.readInventory(newCartProduct) < newCartProduct.getQuantity()) {
                 throw new InventoryException("This Product's Inventory Is Not Enough ");
             }else {
+                cartProduct = cartService.read(cartProduct);
                 cartService.update(newCartProduct,cartProduct.getId());
             }
         }
@@ -246,17 +258,28 @@ public class CartMenu {
 
     public void payment(User user) throws SQLException {
         if (cartService.readAll(user).size() != 0){
-            cartService.changePayMode(user);
+            System.out.print("Are You Sure About Pay Your Cart Amount? (Y/N) : ");
+            boolean yn = check.checkYN();
+            if (yn) {
+                Cart cart = readCart(user);
+                cartService.changePayMode(user);
+                for (int i = 0; i < cart.size(); i++) {
+                    shopService.updateInventory(cart.getMyList().get(i));
+                }
+                System.out.println("Payment Is Successfully.");
+            }else {
+                System.out.println("Payment Is Not Successfully.");
+            }
         }else {
             throw new CartException("You Don't Have Any Active Cart!");
         }
     }
 
-    private int chooseCategory(Scanner input){
+    private int chooseCategory(){
+        System.out.println("--Choose Category--");
         System.out.println("ELECTRICAL_APPLIANCES : 1");
         System.out.println("SHOES : 2");
         System.out.println("READABLE : 3");
-        System.out.print("Enter Category : ");
-        return check.checkButton(1,3,input);
+        return check.checkButton(1,3);
     }
 }
