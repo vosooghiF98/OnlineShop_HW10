@@ -6,7 +6,7 @@ import org.maktab.Exception.InputException;
 import java.util.Scanner;
 
 public class CheckException {
-    public static int checkButton(int first, int last, Scanner input) {
+    public int checkButton(int first, int last, Scanner input) {
         System.out.print("Enter Your Function : ");
         int button;
         if (input.hasNextInt()) {
@@ -22,7 +22,7 @@ public class CheckException {
         }
     }
 
-    public static int checkQuantity(Scanner input) {
+    public int checkQuantity(Scanner input) {
         int quantity;
         if (input.hasNextInt()) {
             int temp = input.nextInt();
@@ -37,7 +37,7 @@ public class CheckException {
         }
     }
 
-    public static String checkNationalCode(Scanner input) {
+    public String checkNationalCode(Scanner input) {
         System.out.print("Enter national code : ");
         String nationalCode;
         if (input.hasNextInt()) {
@@ -53,18 +53,20 @@ public class CheckException {
         }
     }
 
-    public static String checkName(Scanner input) {
+    public String checkName(Scanner input) {
         String name;
-        if (input.hasNext()) {
-            name = input.next();
-            return name;
-        } else {
-            throw new InputException("Enter Character! : ");
+        name = input.next();
+        char[] chars = name.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (Character.isDigit(chars[i])) {
+                throw new InputException("Enter Character! : ");
+            }
         }
+        return name;
     }
 
 
-    public static boolean checkYN(Scanner input) {
+    public boolean checkYN(Scanner input) {
         String yn = input.next();
         if (yn.equalsIgnoreCase("y") || yn.equalsIgnoreCase("n")) {
             return yn.equalsIgnoreCase("y");
@@ -73,7 +75,7 @@ public class CheckException {
         }
     }
 
-    public static int checkPrice(Scanner input) {
+    public int checkPrice(Scanner input) {
         int price;
         if (input.hasNextLong()) {
             int temp = input.nextInt();

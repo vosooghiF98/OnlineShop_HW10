@@ -6,75 +6,77 @@ import org.maktab.Exception.InputException;
 import java.util.Scanner;
 
 public class Check {
-    public int checkButton(int first, int last, Scanner input) {
+    Scanner input = new Scanner(System.in);
+    CheckException checkException = new CheckException();
+    public int checkButton(int first, int last) {
         while (true) {
             try {
-                return CheckException.checkButton(first, last, input);
+                return checkException.checkButton(first, last, input);
             }catch (InputException ie){
-                System.out.println(ie.getMessage());
+                System.err.println(ie.getMessage());
                 input.next();
             }catch (BoundException be){
-                System.out.println(be.getMessage());
+                System.err.println(be.getMessage());
             }
         }
     }
 
-    public int checkQuantity(Scanner input) {
+    public int checkQuantity() {
         while (true) {
             try {
-                return CheckException.checkQuantity(input);
+                return checkException.checkQuantity(input);
             }catch (InputException ie){
-                System.out.println(ie.getMessage());
+                System.err.println(ie.getMessage());
                 input.next();
             }catch (BoundException be){
-                System.out.println(be.getMessage());
+                System.err.println(be.getMessage());
             }
         }
     }
 
-    public String checkNationalCode(Scanner input) {
+    public String checkNationalCode() {
         while (true) {
             try {
-                return CheckException.checkNationalCode(input);
+                return checkException.checkNationalCode(input);
             }catch (InputException ie){
-                System.out.println(ie.getMessage());
+                System.err.println(ie.getMessage());
                 input.next();
             }catch (BoundException be){
-                System.out.println(be.getMessage());
+                System.err.println(be.getMessage());
             }
         }
     }
 
-    public String checkName(Scanner input) {
+    public String checkName() {
         while (true) {
             try {
-                return CheckException.checkName(input);
+                return checkException.checkName(input);
             }catch (InputException ie){
-                System.out.println(ie.getMessage());
+                System.err.println(ie.getMessage());
             }
         }
     }
 
-    public boolean checkYN(Scanner input) {
+    public boolean checkYN() {
         while (true) {
             try {
-                return CheckException.checkYN(input);
+                return checkException.checkYN(input);
             }catch (InputException ie){
-                System.out.println(ie.getMessage());
+                System.err.println(ie.getMessage());
                 input.next();
             }
         }
     }
 
-    public int checkPrice(Scanner input) {
+    public int checkPrice() {
         while (true) {
             try {
-                return CheckException.checkPrice(input);
+                return checkException.checkPrice(input);
             } catch (InputException ie) {
-                System.out.println(ie.getMessage());
+                System.err.println(ie.getMessage());
                 input.next();
             } catch (BoundException be) {
-                System.out.println(be.getMessage());
+                System.err.println(be.getMessage());
             }
         }
     }
