@@ -36,4 +36,14 @@ public class ShopProduct extends Product {
     public void setInventory(int inventory) {
         this.inventory = inventory;
     }
+
+    @Override
+    public String toString() {
+        return "category="+ getCategory() +
+                ", product name=" + getProductName() +
+                ", purchasePrice=" + purchasePrice +
+                ", price=" + price +
+                ", inventory=" + inventory +
+                '}';
+    }
 }

@@ -7,7 +7,7 @@ import org.maktab.Entity.Enum.ProductName;
 public class CartProduct extends Product {
     private int quantity;
     private double price;
-    private double totalPrice = price * quantity;
+    private double totalPrice;
     private boolean isPay;
     private int userId;
 
@@ -36,6 +36,10 @@ public class CartProduct extends Product {
         return totalPrice;
     }
 
+    public void setTotalPrice() {
+        totalPrice = quantity * price;
+    }
+
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
@@ -58,8 +62,7 @@ public class CartProduct extends Product {
 
     @Override
     public String toString() {
-        return "CartProduct{" +
-                "category="+ getCategory() +
+        return "category="+ getCategory() +
                 ", product name=" + getProductName() +
                 ", quantity=" + quantity +
                 ", price=" + price +
