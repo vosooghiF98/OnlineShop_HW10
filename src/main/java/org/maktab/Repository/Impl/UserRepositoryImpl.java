@@ -50,11 +50,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void update(User user, int id) throws SQLException {
         String query = """
-                update users set user_name = ? and password = ? where id = ?
+                update users set user_name = ? , password = ? where id = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setString(1,user.getUsername());
             preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setInt(3,id);
             preparedStatement.executeUpdate();
         }
     }

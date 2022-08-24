@@ -50,7 +50,7 @@ public class ShopRepositoryImpl implements ShopRepository {
     @Override
     public void update(ShopProduct shopProduct, int id) throws SQLException {
         String query = """
-                update shop set purchase_price = ? and price = ? and inventory = ? where id = ?
+                update shop set purchase_price = ? , price = ? , inventory = ? where id = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setDouble(1, shopProduct.getPurchasePrice());

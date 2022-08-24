@@ -44,7 +44,7 @@ public class AdminRepositoryImpl implements AdminRepository {
     @Override
     public void update(Admin admin, int id) throws SQLException {
         String query = """
-                update admin set user_name = ? and password = ? where id = ?
+                update admin set user_name = ? , password = ? where id = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setString(1, admin.getUsername());

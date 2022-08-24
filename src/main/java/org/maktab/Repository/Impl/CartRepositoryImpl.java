@@ -21,8 +21,8 @@ public class CartRepositoryImpl implements CartRepository {
                 values (?,?,?,?,?,?,?)
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
-            preparedStatement.setObject(1, cartProduct.getCategory());
-            preparedStatement.setObject(2, cartProduct.getProductName());
+            preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
+            preparedStatement.setObject(2, cartProduct.getProductName(), Types.OTHER);
             preparedStatement.setInt(3,cartProduct.getQuantity());
             preparedStatement.setDouble(4,cartProduct.getPrice());
             preparedStatement.setDouble(5,cartProduct.getTotalPrice());
@@ -52,7 +52,7 @@ public class CartRepositoryImpl implements CartRepository {
     @Override
     public void update(CartProduct cartProduct, int id) throws SQLException {
         String query = """
-                update cart set category = ? and product = ? and quantity = ? and price = ? and total_price = ? where id = ? and is_pay = false and user_id = ?
+                update cart set category = ? , product = ? , quantity = ? , price = ? , total_price = ? where id = ? and is_pay = false and user_id = ?
                 """;
         try(PreparedStatement preparedStatement = DBConfig.getConnection().prepareStatement(query)){
             preparedStatement.setObject(1, cartProduct.getCategory(), Types.OTHER);
